@@ -1,4 +1,4 @@
-const cacheName = "DefaultCompany-K01 URP-0.1.0";
+const cacheName = "Warc Ltd-Kaya House Customization-0.1.0";
 const contentToCache = [
     "Build/kaya final.loader.js",
     "Build/kaya final.framework.js",

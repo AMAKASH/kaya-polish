@@ -15,9 +15,10 @@
       referrerpolicy="no-referrer"
     />
   </head>
+
   <body>
     <div id="startup-container">
-      <video autoplay muted loop id="bgVideo" preload="auto">
+      <video loop id="bgVideo" preload="auto">
         <source
           src="/StreamingAssets/intro-video-comp-2.webm"
           type="video/webm"
@@ -26,23 +27,23 @@
       </video>
       <div id="item-container">
         <div id="logo-image-container">
-          <img src="/SVG/Asset 66.svg" id="logo-img-1" class="logo-img" />
+          <img src="/SVG/Asset 67.svg" id="logo-img-1" class="logo-img" />
+          <div id="click-to-continue">click to continue</div>
+          <!-- <img src="/SVG/Asset 66.svg" id="logo-img-2" class="logo-img"> -->
         </div>
-        <div id="text-container">
+        <div id="text-container" class="d-none">
+          <!-- <div id="crafting-memories" class="text-transitions">
+          Crafting Memories
+        </div> -->
           <div id="cus-loading-container">
+            Crafting Memories
             <div class="loading-container">
               <div id="progress-bar"></div>
             </div>
           </div>
-          <div id="get-started" class="text-transitions d-none">
+          <div id="get-started" class="text-transitions">
             Get Started
             <i class="fa fa-angle-right angle" aria-hidden="true"></i>
-          </div>
-          <div id="sound-icon">
-            Sound
-           <img src="/StreamingAssets/close-circle-svgrepo-com.svg" 
-              id="cross-icon"
-            />
           </div>
         </div>
       </div>
@@ -79,44 +80,69 @@
       let customloadingContainer = document.querySelector(
         "#cus-loading-container"
       );
-      let soundButton = document.querySelector("#sound-icon");
-      let crossIcon = document.querySelector("#cross-icon");
-
-      soundButton.addEventListener("click", togglesound);
-
-      function togglesound() {
-        bgVideo.muted = !bgVideo.muted;
-        if (bgVideo.muted) {
-          //crossIcon.style.opacity = 1;
-          //crossIcon.style.transform = "translate(0,0)";
-          crossIcon.style.transform = "rotate(45deg)";
-        } else {
-          //crossIcon.style.opacity = 0;
-          //crossIcon.style.transform = "translate(0,15px)";
-          crossIcon.style.transform = "rotate(0deg)";
-        }
-      }
+      let clickToContinue = document.querySelector("#click-to-continue");
 
       setTimeout(() => {
         logoImg1.style.opacity = 1;
         setTimeout(() => {
-          startPhase2();
-        }, 1500);
+        clickToContinue.style.opacity = 1
+      }, 1500);
       }, 700);
 
+      
+     
+
       function startPhase2() {
-        soundButton.style.opacity = 1;
-        if (backgroundLoadComplete) {
-          customloadingContainer.classList.add("d-none");
-          getStarted.classList.remove("d-none");
-          void getStarted.offsetWidth;
-          getStarted.style.opacity = 1;
-        } else {
-          customloadingContainer.style.opacity = 1;
-          loaodingBarShown = true;
-        }
-        getStarted.addEventListener("click", startPhase5);
+        logoImg1.style.opacity = 0;
+        clickToContinue.style.opacity = 0;
+        setTimeout(() => {
+          bgVideo.style.opacity = 1;
+          bgVideo.muted = false;
+          bgVideo.play();
+          setTimeout(() => {
+            logoImgContainer.style.display = 'none';
+            textContainer.classList.remove("d-none");
+            if (backgroundLoadComplete) {
+              customloadingContainer.classList.add('d-none')
+              getStarted.style.opacity = 1;
+            } else {
+              customloadingContainer.style.opacity = 1;
+              loaodingBarShown = true;
+            }
+          }, 1500);
+        }, 1500);
+        startupContainer.removeEventListener("click", startPhase2);
+        //startupContainer.addEventListener("click", startPhase3);
       }
+
+      // function startPhase3() {
+      //   logoImg2.style.opacity = 0;
+      //   setTimeout(() => {
+      //     logoImgContainer.style.display = 'none';
+      //     textContainer.classList.remove('d-none');
+      //     craftingMemories.style.opacity = 1;
+      //   }, 1500)
+
+      //   startupContainer.removeEventListener('click', startPhase3)
+      //   startupContainer.addEventListener('click', startPhase4)
+      // }
+
+      // function startPhase4() {
+      //   craftingMemories.style.opacity = 0;
+      //   setTimeout(() => {
+      //     craftingMemories.classList.add('d-none');
+      //     if (backgroundLoadComplete) {
+      //       getStarted.classList.remove('d-none');
+      //       getStarted.style.opacity = 1;
+      //     } else {
+      //       customloadingContainer.classList.remove('d-none');
+      //       customloadingContainer.style.opacity = 1;
+      //       loaodingBarShown = true;
+      //     }
+      //   }, 1500)
+
+      //   startupContainer.removeEventListener('click', startPhase4)
+      // }
 
       function startPhase5() {
         startupContainer.removeEventListener("click", startPhase5);
@@ -127,31 +153,14 @@
       getStarted.addEventListener("click", startPhase5);
 
       startupContainer.addEventListener("click", startPhase2);
-
-      let LoaderMonitorObj = {
-        unityInstance: null,
-        Module: null,
-      };
-
-      let InitiateWebApp = () => {
-        console.log(LoaderMonitorObj.Module);
-        LoaderMonitorObj.Module["shouldRunNow"] = true;
-        let runfunction = LoaderMonitorObj.Module["run"];
-        console.log(runfunction);
-
-        runfunction();
-        startupContainer.style.opacity = 0;
-        setTimeout(() => {
-          startupContainer.style.display = "none";
-        }, 1500);
-      };
     </script>
+
     <script>
-      // window.addEventListener("load", function () {
-      //   if ("serviceWorker" in navigator) {
-      //     navigator.serviceWorker.register("ServiceWorker.js");
-      //   }
-      // });
+    //   window.addEventListener("load", function () {
+    //   if ("serviceWorker" in navigator) {
+    //     navigator.serviceWorker.register("ServiceWorker.js");
+    //   }
+    // })
 
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -186,6 +195,24 @@
         updateBannerVisibility();
       }
 
+      let LoaderMonitorObj = {
+        unityInstance: null,
+        Module: null,
+      };
+
+      let InitiateWebApp = () => {
+        console.log(LoaderMonitorObj.Module);
+        LoaderMonitorObj.Module["shouldRunNow"] = true;
+        let runfunction = LoaderMonitorObj.Module["run"];
+        console.log(runfunction);
+
+        runfunction();
+        startupContainer.style.opacity = 0;
+        setTimeout(() => {
+          startupContainer.style.display = "none";
+        }, 1500);
+      };
+
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/kaya final.loader.js";
       var config = {
@@ -193,8 +220,8 @@
         frameworkUrl: buildUrl + "/kaya final.framework.js",
         codeUrl: buildUrl + "/kaya final.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "Warc Ltd",
-        productName: "Kaya House Customization",
+        companyName: "DefaultCompany",
+        productName: "K01 URP",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
       };
@@ -229,8 +256,6 @@
               setTimeout(() => {
                 customloadingContainer.classList.add("d-none");
                 getStarted.classList.remove("d-none");
-                getStarted.style.opacity = 0;
-                void getStarted.offsetWidth;
                 getStarted.style.opacity = 1;
               }, 1500);
             }

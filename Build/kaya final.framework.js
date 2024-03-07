@@ -24618,7 +24618,6 @@ var unityFramework = (() => {
 
     // shouldRunNow refers to calling main(), not run().
     var shouldRunNow = true;
-
     Module["noInitialRun"] = true;
 
     if (Module["noInitialRun"]) shouldRunNow = false;
